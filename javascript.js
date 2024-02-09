@@ -408,10 +408,10 @@ if (!fullscreenEnabled()) {
 
 // First render is called in init()
 function renderApp(state) {
-  const pauseBtnIcon = `#icon-${state.paused ? 'play' : 'pause'}`;
+  // const pauseBtnIcon = `#icon-${state.paused ? 'play' : 'pause'}`;
   const soundBtnIcon = `#icon-sound-${soundEnabledSelector() ? 'on' : 'off'}`;
-  appNodes.pauseBtnSVG.setAttribute('href', pauseBtnIcon);
-  appNodes.pauseBtnSVG.setAttribute('xlink:href', pauseBtnIcon);
+  // appNodes.pauseBtnSVG.setAttribute('href', pauseBtnIcon);
+  // appNodes.pauseBtnSVG.setAttribute('xlink:href', pauseBtnIcon);
   appNodes.soundBtnSVG.setAttribute('href', soundBtnIcon);
   appNodes.soundBtnSVG.setAttribute('xlink:href', soundBtnIcon);
   appNodes.controls.classList.toggle('hide', state.menuOpen || state.config.hideControls);
@@ -425,9 +425,9 @@ function renderApp(state) {
   appNodes.autoLaunch.checked = state.config.autoLaunch;
   appNodes.finaleMode.checked = state.config.finale;
   appNodes.skyLighting.value = state.config.skyLighting;
-  appNodes.hideControls.checked = state.config.hideControls;
-  appNodes.fullscreen.checked = state.fullscreen;
-  appNodes.longExposure.checked = state.config.longExposure;
+  // appNodes.hideControls.checked = state.config.hideControls;
+  // appNodes.fullscreen.checked = state.fullscreen;
+  // appNodes.longExposure.checked = state.config.longExposure;
   appNodes.scaleFactor.value = state.config.scaleFactor.toFixed(2);
   
   appNodes.menuInnerWrap.style.opacity = state.openHelpTopic ? 0.12 : 1;
@@ -438,6 +438,25 @@ function renderApp(state) {
     appNodes.helpModalBody.textContent = body;
   }
 }
+
+setTimeout(() => {
+  console.log('runnnn')
+  updateConfig({quality: appNodes.quality.value,
+    shell: appNodes.shellType.value,
+    size: appNodes.shellSize.value,
+    autoLaunch: appNodes.autoLaunch.checked,
+    finale: true,
+    skyLighting: appNodes.skyLighting.value,
+    // longExposure: appNodes.longExposure.checked,
+    // hideControls: appNodes.hideControls.checked,
+    // Store value as number.
+    scaleFactor: parseFloat(appNodes.scaleFactor.value)})
+}, 20000)
+
+// setTimeout(() => {
+//   console.log('runnnn')
+//   togglePause(true)
+// }, 27000)
 
 store.subscribe(renderApp);
 
@@ -466,8 +485,8 @@ function getConfigFromDOM() {
     autoLaunch: appNodes.autoLaunch.checked,
     finale: appNodes.finaleMode.checked,
     skyLighting: appNodes.skyLighting.value,
-    longExposure: appNodes.longExposure.checked,
-    hideControls: appNodes.hideControls.checked,
+    // longExposure: appNodes.longExposure.checked,
+    // hideControls: appNodes.hideControls.checked,
     // Store value as number.
     scaleFactor: parseFloat(appNodes.scaleFactor.value)
   };
@@ -480,8 +499,8 @@ appNodes.shellSize.addEventListener('input', updateConfigNoEvent);
 appNodes.autoLaunch.addEventListener('click', () => setTimeout(updateConfig, 0));
 appNodes.finaleMode.addEventListener('click', () => setTimeout(updateConfig, 0));
 appNodes.skyLighting.addEventListener('input', updateConfigNoEvent);
-appNodes.longExposure.addEventListener('click', () => setTimeout(updateConfig, 0));
-appNodes.hideControls.addEventListener('click', () => setTimeout(updateConfig, 0));
+// appNodes.longExposure.addEventListener('click', () => setTimeout(updateConfig, 0));
+// appNodes.hideControls.addEventListener('click', () => setTimeout(updateConfig, 0));
 appNodes.fullscreen.addEventListener('click', () => setTimeout(toggleFullscreen, 0));
 // Changing scaleFactor requires triggering resize handling code as well.
 appNodes.scaleFactor.addEventListener('input', () => {
@@ -491,9 +510,9 @@ appNodes.scaleFactor.addEventListener('input', () => {
 
 Object.keys(nodeKeyToHelpKey).forEach(nodeKey => {
   const helpKey = nodeKeyToHelpKey[nodeKey];
-  appNodes[nodeKey].addEventListener('click', () => {
-    store.setState({ openHelpTopic: helpKey });
-  });
+  // appNodes[nodeKey].addEventListener('click', () => {
+  //   store.setState({ openHelpTopic: helpKey });
+  // });
 });
 
 appNodes.helpModalCloseBtn.addEventListener('click', () => {
