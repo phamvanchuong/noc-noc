@@ -1,5 +1,5 @@
 'use strict';
-console.clear();
+// console.clear();
 
 // This is a prime example of what starts out as a simple project
 // and snowballs way beyond its intended size. It's a little clunky
@@ -439,19 +439,50 @@ function renderApp(state) {
   }
 }
 
-setTimeout(() => {
-  console.log('runnnn')
-  updateConfig({quality: appNodes.quality.value,
-    shell: appNodes.shellType.value,
-    size: appNodes.shellSize.value,
-    autoLaunch: appNodes.autoLaunch.checked,
-    finale: true,
-    skyLighting: appNodes.skyLighting.value,
-    // longExposure: appNodes.longExposure.checked,
-    // hideControls: appNodes.hideControls.checked,
-    // Store value as number.
-    scaleFactor: parseFloat(appNodes.scaleFactor.value)})
-}, 20000)
+let setFinalTrue
+
+let setFinalFalse
+
+const lapLai = () => {
+  setFinalTrue = setTimeout(() => {
+    console.log('runnnn')
+    updateConfig(
+      {
+        quality: appNodes.quality.value,
+        shell: appNodes.shellType.value,
+        size: appNodes.shellSize.value,
+        autoLaunch: appNodes.autoLaunch.checked,
+        finale: true,
+        skyLighting: appNodes.skyLighting.value,
+        // longExposure: appNodes.longExposure.checked,
+        // hideControls: appNodes.hideControls.checked,
+        // Store value as number.
+        scaleFactor: parseFloat(appNodes.scaleFactor.value)
+      }
+    )
+    setFinalFalse = setTimeout(() => {
+      console.log('run timeout')
+      updateConfig(
+        {
+          quality: appNodes.quality.value,
+          shell: appNodes.shellType.value,
+          size: appNodes.shellSize.value,
+          autoLaunch: appNodes.autoLaunch.checked,
+          finale: false,
+          skyLighting: appNodes.skyLighting.value,
+          // longExposure: appNodes.longExposure.checked,
+          // hideControls: appNodes.hideControls.checked,
+          // Store value as number.
+          scaleFactor: parseFloat(appNodes.scaleFactor.value)
+        }
+      )
+      lapLai()
+    }, 10000)
+    clearTimeout(setFinalTrue)
+  }, 20000)
+};
+
+
 
 // setTimeout(() => {
 //   console.log('runnnn')
@@ -2297,7 +2328,7 @@ if (IS_HEADER) {
   init();
 } else {
   // Allow status to render, then preload assets and start app.
-  setLoadingStatus('Lighting Fuses');
+  // setLoadingStatus('Lighting Fuses');
   setTimeout(() => {
     soundManager.preload()
     .then(
@@ -2309,5 +2340,6 @@ if (IS_HEADER) {
         return Promise.reject(reason);
       }
     );
-  }, 0);
+    lapLai()
+  }, 9000);
 }
